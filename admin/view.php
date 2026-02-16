@@ -1,6 +1,8 @@
 <?php
 include("../misc/connect.php");
 
+$sql = "SELECT * FROM categories";
+$result = $conn->query($sql);
 ?>
 
 <!doctype html>
@@ -154,70 +156,82 @@ include("../misc/connect.php");
 
           <!-- SIDEBAR -->
           <li class="menu-item">
-            <li class="menu-header mt-7">
-              <span class="menu-header-text">Item Verification</span>
-            </li>
+          <li class="menu-header mt-7">
+            <span class="menu-header-text">Item Verification</span>
+          </li>
 
-             <li class="menu-item active open">
-              <a href="lost-submit.php" class="menu-link">
-                <i class="menu-icon icon-base ri ri-apps-2-add-line"></i>
-                <div data-i18n="Basic">Submitted Lost Item</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="found-submit.php" class="menu-link">
-                <i class="menu-icon icon-base ri ri-user-search-line"></i>
-                <div data-i18n="Basic">Submitted Found Item</div>
-              </a>
-            </li>
+          <li class="menu-item">
+            <a href="lost-submit.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-apps-2-add-line"></i>
+              <div data-i18n="Basic">Submitted Lost Item</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="found-submit.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">Submitted Found Item</div>
+            </a>
+          </li>
 
-            <!-- Category Management -->
-            <li class="menu-header mt-7">
-              <span class="menu-header-text">Category Management</span>
-            </li>
+          <!-- Category Management -->
+          <li class="menu-header mt-7">
+            <span class="menu-header-text">Category Management</span>
+          </li>
 
-            <li class="menu-item">
-              <a href="view.php" class="menu-link">
-                <i class="menu-icon icon-base ri ri-user-search-line"></i>
-                <div data-i18n="Basic">View Categories</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="view.php" class="menu-link">
-                <i class="menu-icon icon-base ri ri-user-search-line"></i>
-                <div data-i18n="Basic">Add Categories</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="" class="menu-link">
-                <i class="menu-icon icon-base ri ri-user-search-line"></i>
-                <div data-i18n="Basic">Update Categories</div>
-              </a>
-            </li>
+          <li class="menu-item active open">
+            <a href="view.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">View Categories</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="add-category.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">Add Categories</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">Update Categories</div>
+            </a>
+          </li>
 
-            <!-- Reports Management -->
-             <li class="menu-header mt-7">
-              <span class="menu-header-text">Reports Management</span>
-            </li>
+          <!-- Matchmaking Tool -->
+          <li class="menu-header mt-7">
+            <span class="menu-header-text">Matchmaking Tool</span>
+          </li>
 
-            <li class="menu-item">
-              <a href="view.php" class="menu-link">
-                <i class="menu-icon icon-base ri ri-user-search-line"></i>
-                <div data-i18n="Basic">Found Item Reports</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="view.php" class="menu-link">
-                <i class="menu-icon icon-base ri ri-user-search-line"></i>
-                <div data-i18n="Basic">Claims Reports</div>
-              </a>
-            </li>
-            <li class="menu-item">
-              <a href="" class="menu-link">
-                <i class="menu-icon icon-base ri ri-user-search-line"></i>
-                <div data-i18n="Basic">Unsolved Reports</div>
-              </a>
-            </li>
+          <li class="menu-item">
+            <a href="all-items.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">All Items</div>
+            </a>
+          </li>
+
+          <!-- Reports Management -->
+          <li class="menu-header mt-7">
+            <span class="menu-header-text">Reports Management</span>
+          </li>
+
+          <li class="menu-item">
+            <a href="view.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">Found Item Reports</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="view.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">Claims Reports</div>
+            </a>
+          </li>
+          <li class="menu-item">
+            <a href="" class="menu-link">
+              <i class="menu-icon icon-base ri ri-user-search-line"></i>
+              <div data-i18n="Basic">Unsolved Reports</div>
+            </a>
+          </li>
 
           <!-- / SIDEBAR-->
 
@@ -255,17 +269,6 @@ include("../misc/connect.php");
             <!-- /Search -->
 
             <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-              <!-- Place this tag where you want the button to render. -->
-              <li class="nav-item lh-1 me-4">
-                <a
-                  class="github-button"
-                  href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free"
-                  data-icon="octicon-star"
-                  data-size="large"
-                  data-show-count="true"
-                  aria-label="Star themeselection/materio-html-admin-template-free on GitHub">Star</a>
-              </li>
-
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a
@@ -341,7 +344,7 @@ include("../misc/connect.php");
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
             <!-- CONTENT AREA -->
-            <h3 class="mb-1">View Information</h3>
+            <h3 class="mb-1">View Categories</h3>
             <div class="card">
               <h5 class="card-header">Record</h5>
               <div class="card-body">
@@ -352,13 +355,8 @@ include("../misc/connect.php");
                     <thead>
                       <tr>
                         <th>No.</th>
-                        <th>Student Number</th>
-                        <th>Lastname</th>
-                        <th>Firstname</th>
-                        <th>Email</th>
-                        <th>Phone</th>
-                        <th>Address</th>
-                        <th>Created At</th>
+                        <th>Category Name</th>
+                        <th>Status</th>
                         <th>Action</th>
                       </tr>
                     </thead>
@@ -368,13 +366,8 @@ include("../misc/connect.php");
                         while ($row = $result->fetch_assoc()) {
                           echo "<tr>
                               <td> {$row['id']}</td>
-                              <td> {$row['student_number']}</td>
-                              <td> {$row['lastName']}</td>
-                              <td> {$row['firstName']}</td>
-                              <td> {$row['email']}</td>
-                              <td> {$row['phone']}</td>
-                              <td> {$row['address']}</td>
-                              <td> {$row['created_at']}</td>
+                              <td> {$row['category-name']}</td>
+                              <td> {$row['status']}</td>
                               <td>
                                 <div class='dropdown'>
                                   <button
@@ -384,12 +377,12 @@ include("../misc/connect.php");
                                     <i class='icon-base ri ri-more-2-line icon-18px'></i>
                                   </button>
                                   <div class='dropdown-menu'>
-                                    <a class='dropdown-item' href='update.php?id={$row['id']}'
+                                    <a class='dropdown-item' href='update-category.php?id={$row['id']}'
                                     onclick=\"return confirm('Are you sure you want to edit this record?');\">
                                       <i class='icon-base ri ri-pencil-line icon-18px me-1'></i>
                                       Edit</a
                                     >
-                                    <a class='dropdown-item' href='delete.php?id={$row['id']}'
+                                    <a class='dropdown-item' href='delete-category.php?id={$row['id']}'
                                     onclick=\"return confirm('Are you sure you want to delete this record?');\">
                                       <i class='icon-base ri ri-delete-bin-6-line icon-18px me-1'></i>
                                       Delete</a

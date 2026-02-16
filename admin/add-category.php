@@ -1,12 +1,23 @@
-<?php
-include("../misc/connect.php");
+<?php include "../misc/connect.php";
 
-$sql = "SELECT * FROM `unverified-item` WHERE status='Found'";
-$result = $conn->query($sql);
+function getEnumValues($conn, $table, $column)
+{
+  $sql = "SHOW COLUMNS FROM `$table` LIKE '$column'";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+
+  if ($row && preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches)) {
+    return str_getcsv($matches[1], ',', "'");
+  }
+
+  return [];
+}
+
+$statusEnum = getEnumValues($conn, 'item', 'status');
+$categoryEnum = getEnumValues($conn, 'item', 'categories');
+
 ?>
-
 <!doctype html>
-
 <html
   lang="en"
   class="layout-menu-fixed layout-compact"
@@ -20,7 +31,7 @@ $result = $conn->query($sql);
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
 
-  <title>Local Joy Holdings</title>
+  <title>Enrollment System</title>
 
   <meta name="description" content="" />
 
@@ -154,10 +165,8 @@ $result = $conn->query($sql);
             </a>
           </li>
 
-
-          <!-- Apps & Pages -->
-
-          <!-- Item Verification Sidebar -->
+          <!-- SIDEBAR -->
+          <li class="menu-item">
           <li class="menu-header mt-7">
             <span class="menu-header-text">Item Verification</span>
           </li>
@@ -168,7 +177,7 @@ $result = $conn->query($sql);
               <div data-i18n="Basic">Submitted Lost Item</div>
             </a>
           </li>
-          <li class="menu-item active open">
+          <li class="menu-item">
             <a href="found-submit.php" class="menu-link">
               <i class="menu-icon icon-base ri ri-user-search-line"></i>
               <div data-i18n="Basic">Submitted Found Item</div>
@@ -186,8 +195,8 @@ $result = $conn->query($sql);
               <div data-i18n="Basic">View Categories</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="view.php" class="menu-link">
+          <li class="menu-item active open">
+            <a href="add-category.php" class="menu-link">
               <i class="menu-icon icon-base ri ri-user-search-line"></i>
               <div data-i18n="Basic">Add Categories</div>
             </a>
@@ -272,6 +281,15 @@ $result = $conn->query($sql);
 
             <ul class="navbar-nav flex-row align-items-center ms-md-auto">
               <!-- Place this tag where you want the button to render. -->
+              <li class="nav-item lh-1 me-4">
+                <a
+                  class="github-button"
+                  href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free"
+                  data-icon="octicon-star"
+                  data-size="large"
+                  data-show-count="true"
+                  aria-label="Star themeselection/materio-html-admin-template-free on GitHub">Star</a>
+              </li>
 
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -328,7 +346,7 @@ $result = $conn->query($sql);
                   </li>
                   <li>
                     <div class="d-grid px-4 pt-2 pb-1">
-                      <a class="btn btn-danger d-flex" href="logout.php">
+                      <a class="btn btn-danger d-flex" href="../login/login.php">
                         <small class="align-middle">Logout</small>
                         <i class="ri ri-logout-box-r-line ms-2 ri-xs"></i>
                       </a>
@@ -349,136 +367,129 @@ $result = $conn->query($sql);
           <div class="container-xxl flex-grow-1 container-p-y">
             <!-- CONTENT AREA -->
 
-            <h3 class="mb-1">View Categories</h3>
-            <div class="card">
-              <h5 class="card-header">Record</h5>
-              <div class="card-body">
-                <div class="table-responsive text-nowrap">
-                  <table class="table table-bordered">
+            <h3 class="mb-1"> Add Lost Item</h3>
+            <div class="row mb-6 gy-6">
+              <div class="col-xl">
+                <div class="card">
+                  <div class="card-header d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Details</h5>
+
+                  </div>
+                  <div class="card-body">
+
+                    <form action="insert.php" method="POST">
+                      <div class="form-floating form-floating-outline mb-6">
+                        <input type="text" name="itemName" class="form-control" id="itemName" placeholder="Bag" />
+                        <label for="itemName">Item Name</label>
+                      </div>
+
+                      <div class="form-floating form-floating-outline mb-6">
+                        <select name="categories" id="categories" class="form-select" required>
+                          <?php
+                          foreach ($categoryEnum as $value) {
+                            $safeValue = htmlspecialchars($value);
+                            $isSelected = ($selectedCategory === $value) ? ' selected' : '';
+                            echo '<option value="' . $safeValue . '"' . $isSelected . '>' . ucfirst($safeValue) . '</option>';
+                          }
+                          ?>
+                        </select>
+
+                        <label for="categories">Category</label>
+                      </div>
+
+                      <div class="form-floating form-floating-outline mb-6">
+                        <select name="status" id="status" class="form-select" required>
+                          <?php
+                          foreach ($statusEnum as $value) {
+                            $safeValue = htmlspecialchars($value);
+                            $isSelected = ($selectedStatus === $value) ? ' selected' : '';
+                            echo '<option value="' . $safeValue . '"' . $isSelected . '>' . ucfirst($safeValue) . '</option>';
+                          }
+                          ?>
+                        </select>
+                        <label for="status">Status</label>
+                      </div>
+
+                      <div class="form-floating form-floating-outline mb-6">
+                        <input type="text" name="description" class="form-control" id="description" placeholder="Description of the item" />
+                        <label for="description">Description</label>
+                      </div>
 
 
-                    <thead>
-                      <tr>
-                        <th>No.</th>
-                        <th>Item Name</th>
-                        <th>Category</th>
-                        <th>Color</th>
-                        <th>Location Lost</th>
-                        <th>Description</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                      if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                          echo "<tr>
-                              <td> {$row['id']}</td>
-                              <td> {$row['item-name']}</td>
-                              <td> {$row['categories']}</td>
-                              <td> {$row['color']}</td>
-                              <td> {$row['location-lost']}</td>
-                              <td> {$row['description']}</td>
-                              <td>
-                                <div class='dropdown'>
-                                  <button
-                                    type='button'
-                                    class='btn p-0 dropdown-toggle hide-arrow shadow-none'
-                                    data-bs-toggle='dropdown'>
-                                    <i class='icon-base ri ri-more-2-line icon-18px'></i>
-                                  </button>
-                                  <div class='dropdown-menu'>
-                                    <a class='dropdown-item' href='update-category.php?id={$row['id']}'
-                                    onclick=\"return confirm('Are you sure you want to edit this record?');\">
-                                      <i class='icon-base ri ri-pencil-line icon-18px me-1'></i>
-                                      Edit</a
-                                    >
-                                    <a class='dropdown-item' href='delete-category.php?id={$row['id']}'
-                                    onclick=\"return confirm('Are you sure you want to delete this record?');\">
-                                      <i class='icon-base ri ri-delete-bin-6-line icon-18px me-1'></i>
-                                      Delete</a
-                                    >
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>";
-                        }
-                      }
-                      ?>
-                      </tr>
-                    </tbody>
-                  </table>
+                      <button type="submit" class="btn btn-primary">Submit</button>
+                    </form>
+                  </div>
                 </div>
               </div>
-            </div>
 
-            <!-- / CONTENT AREA-->
+
+
+
+              <!-- / CONTENT AREA-->
+            </div>
+            <!-- / Content -->
+
+            <!-- Footer -->
+            <footer class="content-footer footer bg-footer-theme">
+              <div class="container-xxl">
+                <div
+                  class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
+                  <div class="mb-2 mb-md-0">
+                    &#169;
+                    <script>
+                      document.write(new Date().getFullYear());
+                    </script>
+                    Enrollment Management System
+
+                  </div>
+
+                </div>
+              </div>
+            </footer>
+            <!-- / Footer -->
+
+            <div class="content-backdrop fade"></div>
           </div>
-          <!-- / Content -->
-
-          <!-- Footer -->
-          <footer class="content-footer footer bg-footer-theme">
-            <div class="container-xxl">
-              <div
-                class="footer-container d-flex align-items-center justify-content-between py-4 flex-md-row flex-column">
-                <div class="mb-2 mb-md-0">
-                  &#169;
-                  <script>
-                    document.write(new Date().getFullYear());
-                  </script>
-                  Enrollment Management System
-
-                </div>
-
-              </div>
-            </div>
-          </footer>
-          <!-- / Footer -->
-
-          <div class="content-backdrop fade"></div>
+          <!-- Content wrapper -->
         </div>
-        <!-- Content wrapper -->
+        <!-- / Layout page -->
       </div>
-      <!-- / Layout page -->
+
+      <!-- Overlay -->
+      <div class="layout-overlay layout-menu-toggle"></div>
     </div>
-
-    <!-- Overlay -->
-    <div class="layout-overlay layout-menu-toggle"></div>
-  </div>
-  <!-- / Layout wrapper -->
+    <!-- / Layout wrapper -->
 
 
 
-  <!-- Core JS -->
+    <!-- Core JS -->
 
-  <script src="../assets/vendor/libs/jquery/jquery.js"></script>
+    <script src="../assets/vendor/libs/jquery/jquery.js"></script>
 
-  <script src="../assets/vendor/libs/popper/popper.js"></script>
-  <script src="../assets/vendor/js/bootstrap.js"></script>
-  <script src="../assets/vendor/libs/node-waves/node-waves.js"></script>
+    <script src="../assets/vendor/libs/popper/popper.js"></script>
+    <script src="../assets/vendor/js/bootstrap.js"></script>
+    <script src="../assets/vendor/libs/node-waves/node-waves.js"></script>
 
-  <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
-  <script src="../assets/vendor/js/menu.js"></script>
+    <script src="../assets/vendor/js/menu.js"></script>
 
-  <script src="../assets/js/sweetalert2.all.min.js"></script>
-  <script src="../assets/js/jquery-4.0.0.min.js"></script>
+    <script src="..//assets/js/sweetalert.js"></script>
 
+    <!-- endbuild -->
 
-  <!-- endbuild -->
+    <!-- Vendors JS -->
+    <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
 
-  <!-- Vendors JS -->
-  <script src="../assets/vendor/libs/apex-charts/apexcharts.js"></script>
+    <!-- Main JS -->
 
-  <!-- Main JS -->
+    <script src="../assets/js/main.js"></script>
 
-  <script src="../assets/js/main.js"></script>
+    <!-- Page JS -->
+    <script src="../assets/js/dashboards-analytics.js"></script>
 
-  <!-- Page JS -->
-  <script src="../assets/js/dashboards-analytics.js"></script>
-
-  <!-- Place this tag before closing body tag for github widget button. -->
-  <script async="async" defer="defer" src="https://buttons.github.io/buttons.js"></script>
+    <!-- Place this tag before closing body tag for github widget button. -->
+    <script async="async" defer="defer" src="https://buttons.github.io/buttons.js"></script>
 </body>
 
 </html>

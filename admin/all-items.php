@@ -1,7 +1,7 @@
 <?php
 include("../misc/connect.php");
 
-$sql = "SELECT * FROM `unverified-item` WHERE status='Found'";
+$sql = "SELECT * FROM item";
 $result = $conn->query($sql);
 ?>
 
@@ -20,7 +20,7 @@ $result = $conn->query($sql);
     content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
   <meta name="robots" content="noindex, nofollow" />
 
-  <title>Local Joy Holdings</title>
+  <title>Enrollment System</title>
 
   <meta name="description" content="" />
 
@@ -154,10 +154,8 @@ $result = $conn->query($sql);
             </a>
           </li>
 
-
-          <!-- Apps & Pages -->
-
-          <!-- Item Verification Sidebar -->
+          <!-- SIDEBAR -->
+          <li class="menu-item">
           <li class="menu-header mt-7">
             <span class="menu-header-text">Item Verification</span>
           </li>
@@ -168,7 +166,7 @@ $result = $conn->query($sql);
               <div data-i18n="Basic">Submitted Lost Item</div>
             </a>
           </li>
-          <li class="menu-item active open">
+          <li class="menu-item">
             <a href="found-submit.php" class="menu-link">
               <i class="menu-icon icon-base ri ri-user-search-line"></i>
               <div data-i18n="Basic">Submitted Found Item</div>
@@ -187,7 +185,7 @@ $result = $conn->query($sql);
             </a>
           </li>
           <li class="menu-item">
-            <a href="view.php" class="menu-link">
+            <a href="add-category.php" class="menu-link">
               <i class="menu-icon icon-base ri ri-user-search-line"></i>
               <div data-i18n="Basic">Add Categories</div>
             </a>
@@ -204,7 +202,7 @@ $result = $conn->query($sql);
             <span class="menu-header-text">Matchmaking Tool</span>
           </li>
 
-          <li class="menu-item">
+          <li class="menu-item active open">
             <a href="all-items.php" class="menu-link">
               <i class="menu-icon icon-base ri ri-user-search-line"></i>
               <div data-i18n="Basic">All Items</div>
@@ -271,8 +269,6 @@ $result = $conn->query($sql);
             <!-- /Search -->
 
             <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-              <!-- Place this tag where you want the button to render. -->
-
               <!-- User -->
               <li class="nav-item navbar-dropdown dropdown-user dropdown">
                 <a
@@ -328,7 +324,7 @@ $result = $conn->query($sql);
                   </li>
                   <li>
                     <div class="d-grid px-4 pt-2 pb-1">
-                      <a class="btn btn-danger d-flex" href="logout.php">
+                      <a class="btn btn-danger d-flex" href="../login/login.php">
                         <small class="align-middle">Logout</small>
                         <i class="ri ri-logout-box-r-line ms-2 ri-xs"></i>
                       </a>
@@ -348,8 +344,7 @@ $result = $conn->query($sql);
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
             <!-- CONTENT AREA -->
-
-            <h3 class="mb-1">View Categories</h3>
+            <h3 class="mb-1">View Information</h3>
             <div class="card">
               <h5 class="card-header">Record</h5>
               <div class="card-body">
@@ -361,9 +356,8 @@ $result = $conn->query($sql);
                       <tr>
                         <th>No.</th>
                         <th>Item Name</th>
-                        <th>Category</th>
-                        <th>Color</th>
-                        <th>Location Lost</th>
+                        <th>Categories</th>
+                        <th>Status</th>
                         <th>Description</th>
                         <th>Action</th>
                       </tr>
@@ -374,10 +368,9 @@ $result = $conn->query($sql);
                         while ($row = $result->fetch_assoc()) {
                           echo "<tr>
                               <td> {$row['id']}</td>
-                              <td> {$row['item-name']}</td>
+                              <td> {$row['item_name']}</td>
                               <td> {$row['categories']}</td>
-                              <td> {$row['color']}</td>
-                              <td> {$row['location-lost']}</td>
+                              <td> {$row['status']}</td>
                               <td> {$row['description']}</td>
                               <td>
                                 <div class='dropdown'>
@@ -388,12 +381,12 @@ $result = $conn->query($sql);
                                     <i class='icon-base ri ri-more-2-line icon-18px'></i>
                                   </button>
                                   <div class='dropdown-menu'>
-                                    <a class='dropdown-item' href='update-category.php?id={$row['id']}'
+                                    <a class='dropdown-item' href='update.php?id={$row['id']}'
                                     onclick=\"return confirm('Are you sure you want to edit this record?');\">
                                       <i class='icon-base ri ri-pencil-line icon-18px me-1'></i>
                                       Edit</a
                                     >
-                                    <a class='dropdown-item' href='delete-category.php?id={$row['id']}'
+                                    <a class='dropdown-item' href='delete.php?id={$row['id']}'
                                     onclick=\"return confirm('Are you sure you want to delete this record?');\">
                                       <i class='icon-base ri ri-delete-bin-6-line icon-18px me-1'></i>
                                       Delete</a
@@ -411,6 +404,9 @@ $result = $conn->query($sql);
                 </div>
               </div>
             </div>
+
+
+
 
             <!-- / CONTENT AREA-->
           </div>
@@ -460,10 +456,6 @@ $result = $conn->query($sql);
   <script src="../assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.js"></script>
 
   <script src="../assets/vendor/js/menu.js"></script>
-
-  <script src="../assets/js/sweetalert2.all.min.js"></script>
-  <script src="../assets/js/jquery-4.0.0.min.js"></script>
-
 
   <!-- endbuild -->
 
