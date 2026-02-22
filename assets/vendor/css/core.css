@@ -32,7 +32,7 @@
   --bs-gray-700: #6d6777;
   --bs-gray-800: #585164;
   --bs-gray-900: #433c50;
-  --bs-primary: #8c57ff;
+  --bs-primary: #31CC16;
   --bs-secondary: #8a8d93;
   --bs-success: #56ca00;
   --bs-info: #16b1ff;
@@ -41,7 +41,7 @@
   --bs-light: #dfdfe3;
   --bs-dark: #312d4b;
   --bs-gray: #eae9ec;
-  --bs-primary-rgb: 140, 87, 255;
+  --bs-primary-rgb: 49, 204, 22;
   --bs-secondary-rgb: 138, 141, 147;
   --bs-success-rgb: 86, 202, 0;
   --bs-info-rgb: 22, 177, 255;
@@ -23618,7 +23618,7 @@ body {
 ******************************************************************************* */
 .menu {
   display: flex;
-  background-color: var(--bs-menu-bg);
+  background-color: rgba(24, 93, 204, 0.2);
 }
 .menu .app-brand {
   inline-size: 100%;
