@@ -3,6 +3,23 @@ include("../misc/connect.php");
 
 $sql = "SELECT * FROM item";
 $result = $conn->query($sql);
+
+function getEnumValues($conn, $table, $column)
+{
+  $sql = "SHOW COLUMNS FROM `$table` LIKE '$column'";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+
+  if ($row && preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches)) {
+    return str_getcsv($matches[1], ',', "'");
+  }
+
+  return [];
+}
+
+$categoryEnum = getEnumValues($conn, 'item', 'categories');
+$statusEnum = getEnumValues($conn, 'item', 'status');
+
 ?>
 
 <!doctype html>
@@ -53,7 +70,7 @@ $result = $conn->query($sql);
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
   <!-- Page CSS -->
-  <link rel="stylesheet" href="../dist/css/admin.css">
+  <link rel="stylesheet" href="../assets/vendor/css/style.css">
 
   <!-- Helpers -->
   <script src="../assets/vendor/js/helpers.js"></script>
@@ -70,7 +87,7 @@ $result = $conn->query($sql);
     <div class="layout-container">
       <!-- Menu -->
 
-         <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+      <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
         <div class="app-brand demo">
           <a href="index.php" class="app-brand-link">
             <span class="app-brand-logo demo me-1">
@@ -138,7 +155,7 @@ $result = $conn->query($sql);
             </a>
           </li>
           <li class="menu-item">
-            <a href="" class="menu-link">
+            <a class="menu-link">
               <i class="menu-icon icon-base ri ri-file-edit-line"></i>
               <div data-i18n="Basic">Update Categories</div>
             </a>
@@ -192,7 +209,7 @@ $result = $conn->query($sql);
         <!-- Navbar -->
 
         <nav
-          class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
+          class="layout-navbar container-xxl navbar navbar-expand-xl align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
@@ -292,7 +309,51 @@ $result = $conn->query($sql);
             <!-- CONTENT AREA -->
             <h3 class="mb-1">View Information</h3>
             <div class="card">
-              <h5 class="card-header">Record</h5>
+              <div class="filter row align-items-start justify-content-around">
+
+                <div class="search col nav-item d-inline-flex align-items-center">
+                  <select class="form-select" aria-label="Default select example">
+                    <option selected>Filter Item Name</option>
+                    <option value="1">Ascending</option>
+                    <option value="2">Descending</option>
+                  </select>
+                </div>
+
+                <div class="search col nav-item d-inline-flex align-items-center">
+                  <select class="form-select" aria-label="Default select example">
+                    <?php
+                    foreach ($categoryEnum as $value) {
+                      $safeValue = htmlspecialchars($value);
+                      $isSelected = ($selectedCategory === $value) ? ' selected' : '';
+                      echo '<option value="' . $safeValue . '"' . $isSelected . '>' . ucfirst($safeValue) . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <div class="search col nav-item d-inline-flex align-items-center">
+                  <select class="form-select" aria-label="Default select example">
+                    <?php
+                    foreach ($statusEnum as $value) {
+                      $safeValue = htmlspecialchars($value);
+                      $isSelected = ($selectedStatus === $value) ? ' selected' : '';
+                      echo '<option value="' . $safeValue . '"' . $isSelected . '>' . ucfirst($safeValue) . '</option>';
+                    }
+                    ?>
+                  </select>
+                </div>
+
+                <div class="search col nav-item d-inline-flex align-items-center">
+                  <i class="icon-base ri ri-search-line icon-lg lh-0"></i>
+                  <input
+                    type="text"
+                    class="form-control border-0 shadow-none"
+                    placeholder="Search..."
+                    aria-label="Search..." />
+                </div>
+              </div>
+
+
               <div class="card-body">
                 <div class="table-responsive text-nowrap">
                   <table class="table table-bordered">

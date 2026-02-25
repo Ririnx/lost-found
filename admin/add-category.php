@@ -64,7 +64,7 @@ $categoryEnum = getEnumValues($conn, 'item', 'categories');
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
   <!-- Page CSS -->
-  <link rel="stylesheet" href="../dist/css/admin.css">
+  <link rel="stylesheet" href="../assets/vendor/css/style.css">
 
   <!-- Helpers -->
   <script src="../assets/vendor/js/helpers.js"></script>
@@ -148,7 +148,7 @@ $categoryEnum = getEnumValues($conn, 'item', 'categories');
             </a>
           </li>
           <li class="menu-item">
-            <a href="" class="menu-link">
+            <a class="menu-link">
               <i class="menu-icon icon-base ri ri-file-edit-line"></i>
               <div data-i18n="Basic">Update Categories</div>
             </a>
@@ -201,7 +201,7 @@ $categoryEnum = getEnumValues($conn, 'item', 'categories');
         <!-- Navbar -->
 
         <nav
-          class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
+          class="layout-navbar container-xxl navbar navbar-expand-xl align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
@@ -312,7 +312,7 @@ $categoryEnum = getEnumValues($conn, 'item', 'categories');
                   </div>
                   <div class="card-body">
 
-                    <form action="insert.php" method="POST">
+                    <form action="insert-category.php" method="POST">
                       <div class="form-floating form-floating-outline mb-6">
                         <input type="text" name="itemName" class="form-control" id="itemName" placeholder="Bag" />
                         <label for="itemName">Item Name</label>

@@ -53,7 +53,7 @@ $result = $conn->query($sql);
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
   <!-- Page CSS -->
-  <link rel="stylesheet" href="../dist/css/admin.css">
+  <link rel="stylesheet" href="../assets/vendor/css/style.css">
 
   <!-- Helpers -->
   <script src="../assets/vendor/js/helpers.js"></script>
@@ -192,7 +192,7 @@ $result = $conn->query($sql);
         <!-- Navbar -->
 
         <nav
-          class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
+          class="layout-navbar container-xxl navbar navbar-expand-xl align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
@@ -290,9 +290,9 @@ $result = $conn->query($sql);
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
             <!-- CONTENT AREA -->
-            <h3 class="mb-1">View Categories</h3>
+            <h1 class="mb-1">All Categories Created</h3>
             <div class="card">
-              <h5 class="card-header">Record</h5>
+
               <div class="card-body">
                 <div class="table-responsive text-nowrap">
                   <table class="table table-bordered">

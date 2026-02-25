@@ -1,8 +1,7 @@
 <?php
 include("../misc/connect.php");
 
-$sql = "SELECT * FROM `unverified-item` WHERE status='Lost'";
-$result = $conn->query($sql);
+
 ?>
 
 <!doctype html>
@@ -25,7 +24,7 @@ $result = $conn->query($sql);
   <meta name="description" content="" />
 
   <!-- Favicon -->
-  <link rel="icon" type="image/x-icon" href="../assets/img/favicon/favicon.ico" />
+  <link rel="icon" type="image/x-icon" href="../assets/img/icon/company-icon.png" />
 
   <!-- Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -53,7 +52,7 @@ $result = $conn->query($sql);
   <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
   <!-- Page CSS -->
-  <link rel="stylesheet" href="../assets/vendor/css/style.css">
+  <link rel="stylesheet" href="../dist/css/admin.css">
 
   <!-- Helpers -->
   <script src="../assets/vendor/js/helpers.js"></script>
@@ -104,79 +103,43 @@ $result = $conn->query($sql);
 
           <!-- Item Verification Sidebar -->
           <li class="menu-header mt-7">
-            <span class="menu-header-text">Item Verification</span>
+            <span class="menu-header-text">Item Reporting</span>
           </li>
 
-          <li class="menu-item active open">
-            <a href="lost-submit.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-bard-fill"></i>
-              <div data-i18n="Basic">Submitted Lost Item</div>
+          <li class="menu-item">
+            <a href="report-lost-item.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-hand-heart-line"></i>
+              <div data-i18n="Basic">Report Lost Item</div>
             </a>
           </li>
-          <li class="menu-item">
-            <a href="found-submit.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-bard-line"></i>
-              <div data-i18n="Basic">Submitted Found Item</div>
+          <li class="menu-item active open">
+            <a href="report-found-item.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-hand-heart-fill"></i>
+              <div data-i18n="Basic">Report Found Item</div>
             </a>
           </li>
 
           <!-- Category Management -->
           <li class="menu-header mt-7">
-            <span class="menu-header-text">Category Management</span>
+            <span class="menu-header-text">Tracking Status</span>
           </li>
 
           <li class="menu-item">
-            <a href="view.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-list-view"></i>
-              <div data-i18n="Basic">View Categories</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="add-category.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-file-add-line"></i>
-              <div data-i18n="Basic">Add Categories</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="" class="menu-link">
-              <i class="menu-icon icon-base ri ri-file-edit-line"></i>
-              <div data-i18n="Basic">Update Categories</div>
+            <a href="track-status.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-clipboard-line"></i>
+              <div data-i18n="Basic">Track Status</div>
             </a>
           </li>
 
-          <!-- Matchmaking Tool -->
+          <!-- Notification -->
           <li class="menu-header mt-7">
-            <span class="menu-header-text">Matchmaking Tool</span>
+            <span class="menu-header-text">Notifications</span>
           </li>
 
           <li class="menu-item">
-            <a href="all-items.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-file-paper-2-line"></i>
-              <div data-i18n="Basic">All Items</div>
-            </a>
-          </li>
-
-          <!-- Reports Management -->
-          <li class="menu-header mt-7">
-            <span class="menu-header-text">Reports Management</span>
-          </li>
-
-          <li class="menu-item">
-            <a href="view.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-find-replace-line"></i>
-              <div data-i18n="Basic">Found Item Reports</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="view.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-hand-coin-line"></i>
-              <div data-i18n="Basic">Claims Reports</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="" class="menu-link">
-              <i class="menu-icon icon-base ri ri-hourglass-2-fill"></i>
-              <div data-i18n="Basic">Unsolved Reports</div>
+            <a href="notifications.php" class="menu-link">
+              <i class="menu-icon icon-base ri ri-notification-2-line"></i>
+              <div data-i18n="Basic">Notifications</div>
             </a>
           </li>
 
@@ -193,7 +156,7 @@ $result = $conn->query($sql);
         <!-- Navbar -->
 
         <nav
-          class="layout-navbar container-xxl  navbar navbar-expand-xl align-items-center bg-navbar-theme"
+          class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
           id="layout-navbar">
           <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
             <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
@@ -293,69 +256,13 @@ $result = $conn->query($sql);
           <!-- Content -->
           <div class="container-xxl flex-grow-1 container-p-y">
             <!-- CONTENT AREA -->
-
-            <h3 class="mb-1">View Categories</h3>
-            <div class="card">
-              <h5 class="card-header">Record</h5>
-              <div class="card-body">
-                <div class="table-responsive text-nowrap">
-                  <table class="table table-bordered">
-
-
-                    <thead>
-                      <tr>
-                        <th>No.</th>
-                        <th>Item Name</th>
-                        <th>Category</th>
-                        <th>Color</th>
-                        <th>Location Lost</th>
-                        <th>Description</th>
-                        <th>Action</th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      <?php
-                      if ($result->num_rows > 0) {
-                        while ($row = $result->fetch_assoc()) {
-                          echo "<tr>
-                              <td> {$row['id']}</td>
-                              <td> {$row['item-name']}</td>
-                              <td> {$row['categories']}</td>
-                              <td> {$row['color']}</td>
-                              <td> {$row['location-lost']}</td>
-                              <td> {$row['description']}</td>
-                              <td>
-                                <div class='dropdown'>
-                                  <button
-                                    type='button'
-                                    class='btn p-0 dropdown-toggle hide-arrow shadow-none'
-                                    data-bs-toggle='dropdown'>
-                                    <i class='icon-base ri ri-more-2-line icon-18px'></i>
-                                  </button>
-                                  <div class='dropdown-menu'>
-                                    <a class='dropdown-item' href='update-category.php?id={$row['id']}'
-                                    onclick=\"return confirm('Are you sure you want to approve this record?');\">
-                                      <i class='icon-base ri ri-pencil-line icon-18px me-1'></i>
-                                      Approve</a
-                                    >
-                                    <a class='dropdown-item' href='delete-category.php?id={$row['id']}'
-                                    onclick=\"return confirm('Are you sure you want to reject this record?');\">
-                                      <i class='icon-base ri ri-delete-bin-6-line icon-18px me-1'></i>
-                                      Reject</a
-                                    >
-                                  </div>
-                                </div>
-                              </td>
-                            </tr>";
-                        }
-                      }
-                      ?>
-                      </tr>
-                    </tbody>
-                  </table>
-                </div>
+            <div class="row gy-6">
+              <div class="col-lg-12">
+                Test
               </div>
             </div>
+
+
 
             <!-- / CONTENT AREA-->
           </div>
@@ -371,7 +278,7 @@ $result = $conn->query($sql);
                   <script>
                     document.write(new Date().getFullYear());
                   </script>
-                  Enrollment Management System
+                  Lost & Found System, All rights reserved.
 
                 </div>
 

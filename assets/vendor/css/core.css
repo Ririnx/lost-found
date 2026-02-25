@@ -2335,6 +2335,9 @@ progress {
   border-bottom-width: var(--bs-border-width);
   box-shadow: inset 0 0 0 9999px var(--bs-table-bg-state, var(--bs-table-bg-type, var(--bs-table-accent-bg)));
 }
+.table > thead > tr:nth-child(even) > * {
+  background-color: var(--bs-table-accent-bg);
+}
 .table > tbody {
   vertical-align: inherit;
 }
@@ -8122,7 +8125,7 @@ img[data-app-light-img][data-app-dark-img] {
   padding-block: 1.115rem;
 }
 .table:not(.table-dark, .table-light) thead:not(.table-dark, .table-light) tr th {
-  background-color: var(--bs-table-header-bg-color);
+  background-color: rgba(218, 61, 32, 0.2);
 }
 .table:not(.table-dark, .table-light):not(.dt-complex-header) thead:not(.table-dark, .table-light) tr th {
   border-block-end-color: var(--bs-table-header-bg-color);
@@ -11342,7 +11345,7 @@ button:focus-visible {
 /* Navbar
 ******************************************************************************* */
 .layout-navbar {
-  background-color: var(--bs-body-bg);
+  background-color: red;
 }
 
 .navbar-brand {
@@ -24180,7 +24183,6 @@ body {
   backdrop-filter: blur(7.5px);
   block-size: 4rem;
   color: var(--bs-body-color);
-  padding-block: 0.25rem 0.2rem;
 }
 .layout-navbar .navbar {
   transform: translate3d(0, 0, 0);

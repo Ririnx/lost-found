@@ -1,0 +1,19 @@
+tr:nth-child(even) {
+  background-color: #c5c5c52f;
+}
+
+.layout-navbar{
+  margin: 0px;
+  background-color: rgb(0, 0, 0);
+}
+
+.search {
+  border: 0;
+  padding: 0.75rem 1.25rem;
+  width: 250px;
+}
+
+.filter {
+  background-color: aliceblue;
+  margin: 0;
+}

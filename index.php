@@ -109,7 +109,7 @@ if (isset($_POST['username']) && isset($_POST['password'])) {
             <h4 class="mb-1">Welcome to Local Joy Holdings!</h4>
             <p class="mb-5">Please sign-in to view </p>
 
-            <form id="formAuthentication" class="mb-5" action="login.php" method="POST">
+            <form id="formAuthentication" class="mb-5" action="index.php" method="POST">
               <div class="form-floating form-floating-outline mb-5 form-control-validation">
                 <input
                   type="text"

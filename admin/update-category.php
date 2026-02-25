@@ -1,10 +1,27 @@
 <?php
 include("../misc/connect.php");
 
+session_start();
+
+function getEnumValues($conn, $table, $column)
+{
+  $sql = "SHOW COLUMNS FROM `$table` LIKE '$column'";
+  $result = $conn->query($sql);
+  $row = $result->fetch_assoc();
+
+  if ($row && preg_match("/^enum\((.*)\)$/i", $row['Type'], $matches)) {
+    return str_getcsv($matches[1], ',', "'");
+  }
+
+  return [];
+}
+
+$statusEnum = getEnumValues($conn, 'categories', 'status');
+
 if (isset($_GET['id'])) {
   $id = $_GET['id'];
 
-  $sql = "SELECT * FROM students WHERE id = '$id' LIMIT 1";;
+  $sql = "SELECT * FROM categories WHERE id = '$id' LIMIT 1";;
   $result = $conn->query($sql);
 
   if (mysqli_num_rows($result) > 0) {
@@ -60,7 +77,7 @@ if (isset($_GET['id'])) {
       <link rel="stylesheet" href="../assets/vendor/libs/apex-charts/apex-charts.css" />
 
       <!-- Page CSS -->
-      <link rel="stylesheet" href="../dist/css/admin.css">
+      <link rel="stylesheet" href="../assets/vendor/css/style.css">
 
       <!-- Helpers -->
       <script src="../assets/vendor/js/helpers.js"></script>
@@ -77,117 +94,117 @@ if (isset($_GET['id'])) {
         <div class="layout-container">
           <!-- Menu -->
 
-                <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
-        <div class="app-brand demo">
-          <a href="index.php" class="app-brand-link">
-            <span class="app-brand-logo demo me-1">
-              <span class="text-primary">
-                <img src="../assets/img/icon/company-icon.png" alt="Company Icon" style="width: 40px; height: 34px;" />
-              </span>
-            </span>
-            <span class="app-brand-text demo menu-text fw-semibold ms-2">LJH</span>
-          </a>
+          <aside id="layout-menu" class="layout-menu menu-vertical menu bg-menu-theme">
+            <div class="app-brand demo">
+              <a href="index.php" class="app-brand-link">
+                <span class="app-brand-logo demo me-1">
+                  <span class="text-primary">
+                    <img src="../assets/img/icon/company-icon.png" alt="Company Icon" style="width: 40px; height: 34px;" />
+                  </span>
+                </span>
+                <span class="app-brand-text demo menu-text fw-semibold ms-2">LJH</span>
+              </a>
 
-          <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
-            <i class="menu-toggle-icon d-xl-inline-block align-middle"></i>
-          </a>
-        </div>
+              <a href="javascript:void(0);" class="layout-menu-toggle menu-link text-large ms-auto">
+                <i class="menu-toggle-icon d-xl-inline-block align-middle"></i>
+              </a>
+            </div>
 
-        <div class="menu-inner-shadow"></div>
+            <div class="menu-inner-shadow"></div>
 
-        <ul class="menu-inner py-1">
-          <!-- Dashboards -->
-          <li class="menu-item">
-            <a href="index.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-dashboard-fill"></i>
-              <div data-i18n="Dashboards">Dashboard</div>
+            <ul class="menu-inner py-1">
+              <!-- Dashboards -->
+              <li class="menu-item">
+                <a href="index.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-dashboard-fill"></i>
+                  <div data-i18n="Dashboards">Dashboard</div>
 
-            </a>
-          </li>
+                </a>
+              </li>
 
 
 
-          <!-- Apps & Pages -->
+              <!-- Apps & Pages -->
 
-          <!-- Item Verification Sidebar -->
-          <li class="menu-header mt-7">
-            <span class="menu-header-text">Item Verification</span>
-          </li>
+              <!-- Item Verification Sidebar -->
+              <li class="menu-header mt-7">
+                <span class="menu-header-text">Item Verification</span>
+              </li>
 
-          <li class="menu-item">
-            <a href="lost-submit.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-bard-fill"></i>
-              <div data-i18n="Basic">Submitted Lost Item</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="found-submit.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-bard-line"></i>
-              <div data-i18n="Basic">Submitted Found Item</div>
-            </a>
-          </li>
+              <li class="menu-item">
+                <a href="lost-submit.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-bard-fill"></i>
+                  <div data-i18n="Basic">Submitted Lost Item</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="found-submit.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-bard-line"></i>
+                  <div data-i18n="Basic">Submitted Found Item</div>
+                </a>
+              </li>
 
-          <!-- Category Management -->
-          <li class="menu-header mt-7">
-            <span class="menu-header-text">Category Management</span>
-          </li>
+              <!-- Category Management -->
+              <li class="menu-header mt-7">
+                <span class="menu-header-text">Category Management</span>
+              </li>
 
-          <li class="menu-item">
-            <a href="view.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-list-view"></i>
-              <div data-i18n="Basic">View Categories</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="add-category.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-file-add-line"></i>
-              <div data-i18n="Basic">Add Categories</div>
-            </a>
-          </li>
-          <li class="menu-item active open">
-            <a href="" class="menu-link">
-              <i class="menu-icon icon-base ri ri-file-edit-line"></i>
-              <div data-i18n="Basic">Update Categories</div>
-            </a>
-          </li>
+              <li class="menu-item">
+                <a href="view.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-list-view"></i>
+                  <div data-i18n="Basic">View Categories</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="add-category.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-file-add-line"></i>
+                  <div data-i18n="Basic">Add Categories</div>
+                </a>
+              </li>
+              <li class="menu-item active open">
+                <a href="" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-file-edit-line"></i>
+                  <div data-i18n="Basic">Update Categories</div>
+                </a>
+              </li>
 
-          <!-- Matchmaking Tool -->
-          <li class="menu-header mt-7">
-            <span class="menu-header-text">Matchmaking Tool</span>
-          </li>
+              <!-- Matchmaking Tool -->
+              <li class="menu-header mt-7">
+                <span class="menu-header-text">Matchmaking Tool</span>
+              </li>
 
-          <li class="menu-item">
-            <a href="all-items.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-file-paper-2-line"></i>
-              <div data-i18n="Basic">All Items</div>
-            </a>
-          </li>
+              <li class="menu-item">
+                <a href="all-items.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-file-paper-2-line"></i>
+                  <div data-i18n="Basic">All Items</div>
+                </a>
+              </li>
 
-          <!-- Reports Management -->
-          <li class="menu-header mt-7">
-            <span class="menu-header-text">Reports Management</span>
-          </li>
+              <!-- Reports Management -->
+              <li class="menu-header mt-7">
+                <span class="menu-header-text">Reports Management</span>
+              </li>
 
-          <li class="menu-item">
-            <a href="view.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-find-replace-line"></i>
-              <div data-i18n="Basic">Found Item Reports</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="view.php" class="menu-link">
-              <i class="menu-icon icon-base ri ri-hand-coin-line"></i>
-              <div data-i18n="Basic">Claims Reports</div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="" class="menu-link">
-              <i class="menu-icon icon-base ri ri-hourglass-2-fill"></i>
-              <div data-i18n="Basic">Unsolved Reports</div>
-            </a>
-          </li>
+              <li class="menu-item">
+                <a href="view.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-find-replace-line"></i>
+                  <div data-i18n="Basic">Found Item Reports</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="view.php" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-hand-coin-line"></i>
+                  <div data-i18n="Basic">Claims Reports</div>
+                </a>
+              </li>
+              <li class="menu-item">
+                <a href="" class="menu-link">
+                  <i class="menu-icon icon-base ri ri-hourglass-2-fill"></i>
+                  <div data-i18n="Basic">Unsolved Reports</div>
+                </a>
+              </li>
 
-          <!-- / SIDEBAR-->
+              <!-- / SIDEBAR-->
 
 
             </ul>
@@ -199,7 +216,7 @@ if (isset($_GET['id'])) {
             <!-- Navbar -->
 
             <nav
-              class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
+              class="layout-navbar container-xxl  navbar navbar-expand-xl align-items-center bg-navbar-theme"
               id="layout-navbar">
               <div class="layout-menu-toggle navbar-nav align-items-xl-center me-4 me-xl-0 d-xl-none">
                 <a class="nav-item nav-link px-0 me-xl-6" href="javascript:void(0)">
@@ -208,30 +225,9 @@ if (isset($_GET['id'])) {
               </div>
 
               <div class="navbar-nav-right d-flex align-items-center justify-content-end" id="navbar-collapse">
-                <!-- Search -->
-                <div class="navbar-nav align-items-center">
-                  <div class="nav-item d-flex align-items-center">
-                    <i class="icon-base ri ri-search-line icon-lg lh-0"></i>
-                    <input
-                      type="text"
-                      class="form-control border-0 shadow-none"
-                      placeholder="Search..."
-                      aria-label="Search..." />
-                  </div>
-                </div>
-                <!-- /Search -->
 
                 <ul class="navbar-nav flex-row align-items-center ms-md-auto">
                   <!-- Place this tag where you want the button to render. -->
-                  <li class="nav-item lh-1 me-4">
-                    <a
-                      class="github-button"
-                      href="https://github.com/themeselection/materio-bootstrap-html-admin-template-free"
-                      data-icon="octicon-star"
-                      data-size="large"
-                      data-show-count="true"
-                      aria-label="Star themeselection/materio-html-admin-template-free on GitHub">Star</a>
-                  </li>
 
                   <!-- User -->
                   <li class="nav-item navbar-dropdown dropdown-user dropdown">
@@ -269,26 +265,11 @@ if (isset($_GET['id'])) {
                         </a>
                       </li>
                       <li>
-                        <a class="dropdown-item" href="#">
-                          <i class="icon-base ri ri-settings-4-line icon-md me-3"></i>
-                          <span>Settings</span>
-                        </a>
-                      </li>
-                      <li>
-                        <a class="dropdown-item" href="#">
-                          <span class="d-flex align-items-center align-middle">
-                            <i class="flex-shrink-0 icon-base ri ri-bank-card-line icon-md me-3"></i>
-                            <span class="flex-grow-1 align-middle ms-1">Billing Plan</span>
-                            <span class="flex-shrink-0 badge rounded-pill bg-danger">4</span>
-                          </span>
-                        </a>
-                      </li>
-                      <li>
                         <div class="dropdown-divider my-1"></div>
                       </li>
                       <li>
                         <div class="d-grid px-4 pt-2 pb-1">
-                          <a class="btn btn-danger d-flex" href="../login/login.php">
+                          <a class="btn btn-danger d-flex" href="../index.php">
                             <small class="align-middle">Logout</small>
                             <i class="ri ri-logout-box-r-line ms-2 ri-xs"></i>
                           </a>
@@ -308,88 +289,33 @@ if (isset($_GET['id'])) {
               <!-- Content -->
               <div class="container-xxl flex-grow-1 container-p-y">
                 <!-- CONTENT AREA -->
-                <h3 class="mb-1">Update Information</h3>
+                <h3 class="mb-1">Update Category</h3>
 
                 <div class="col-xxl">
                   <div class="card">
 
                     <div class="card-body">
-                      <form action="edit.php" method="POST">
+                      <form action="edit-category.php" method="POST">
                         <input type="hidden" name="id" value="<?= $row['id']; ?>">
-                        <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-default-student-number">Student Number</label>
-                          <div class="col-sm-10">
-                            <input type="number" name="studentNumber" value="<?= $row['student_number'] ?>" class="form-control" id="basic-default-name" placeholder="2501602532" readonly />
-                          </div>
+                        <div class="form-floating form-floating-outline mb-6">
+                          <input type="text" name="category" class="form-control" id="category" value="<?=$row['category-name'] ?>" placeholder="Category of the item" />
+                          <label for="category">Category</label>
                         </div>
-                        <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-default-lastname">Last Name</label>
-                          <div class="col-sm-10">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="lastname"
-                              name="lastname"
-                              value="<?= $row['lastName'] ?>" />
-                          </div>
+
+                        <div class="form-floating form-floating-outline mb-6">
+                          <select name="status" id="status" class="form-select" required>
+                            <?php
+                            foreach ($statusEnum as $value) {
+                              $safeValue = htmlspecialchars($value);
+                              $isSelected = ($selectedStatus === $value) ? ' selected' : '';
+                              echo '<option value="' . $safeValue . '"' . $isSelected . '>' . ucfirst($safeValue) . '</option>';
+                            }
+                            ?>
+                          </select>
+                          <label for="status">Status</label>
                         </div>
-                        <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-default-firstname">First Name</label>
-                          <div class="col-sm-10">
-                            <input
-                              type="text"
-                              class="form-control"
-                              id="firstname"
-                              name="firstname"
-                              value="<?= $row['firstName'] ?>" />
-                          </div>
-                        </div>
-                        <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-default-firstname">Email</label>
-                          <div class="col-sm-10">
-                            <div class="input-group input-group-merge">
-                              <input
-                                type="text"
-                                id="email"
-                                name="email"
-                                class="form-control"
-                                placeholder="john.doe"
-                                aria-label="john.doe"
-                                aria-describedby="basic-default-email2"
-                                value="<?= $row['email'] ?>" />
-                              <span class="input-group-text" id="basic-default-email2">@example.com</span>
-                            </div>
-                          </div>
-                        </div>
-                        <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-default-phone">Phone #</label>
-                          <div class="col-sm-10">
-                            <input
-                              type="text"
-                              id="basic-default-phone"
-                              class="form-control phone-mask"
-                              placeholder="658 799 8941"
-                              aria-label="658 799 8941"
-                              aria-describedby="basic-default-phone"
-                              name="phone"
-                              value="<?= $row['phone'] ?>" />
-                          </div>
-                        </div>
-                        <div class="row mb-4">
-                          <label class="col-sm-2 col-form-label" for="basic-default-message">Address</label>
-                          <div class="col-sm-10">
-                            <textarea
-                              id="basic-default-message"
-                              class="form-control"
-                              name="address"
-                              aria-describedby="basic-icon-default-message2"><?= $row['address'] ?></textarea>
-                          </div>
-                        </div>
-                        <div class="row justify-content-end">
-                          <div class="col-sm-10">
-                            <button type="submit" name="update" class="btn btn-primary">Submit</button>
-                          </div>
-                        </div>
+
+                        <button type="submit" name="update" class="btn btn-primary">Submit</button>
                       </form>
                   <?php
                 } else {
